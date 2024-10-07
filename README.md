@@ -20,6 +20,8 @@ The second example is an example that didn't work with a brief explanation of wh
 
 Q Excluding centipedes and millipedes, what is the average number of legs each animal has in the database?
 
+SQL ```SELECT AVG(legs) FROM Animal WHERE name NOT IN ('Centipede', 'Millipede');```
+
 A The average number of legs for animals in the database, excluding centipedes and millipedes, is 5.2.
 
 ### Example 2
