@@ -1,0 +1,29 @@
+1.  Q How many spiders are in the database?
+    A There are 4 spiders in the database.
+2.  Q Excluding centipedes and millipedes, what is the average number of legs each animal has in the database?
+    A The average number of legs for animals in the database, excluding centipedes and millipedes, is 5.2.
+3.  Q On average do spiders with necrotic or neurotoxic venom weigh more?
+    A On average, spiders with neurotoxic venom weigh more, with an average weight of 0.535, compared to spiders with necrotic venom, which have an average weight of 0.38.
+4.  Q What percentage of animals in this database have wings?
+    A Approximately 16.67% of the animals in this database have wings.
+    E This answer is not correct. There are multiple ways to interpret this question, but even the most conservative approach should show at least 25% of the animals as having wings. The SQL generated was gibberish. SELECT (COUNT(DISTINCT a.id) * 100.0 / (SELECT COUNT(*) 
+5.  Q What percentage of insects in this database have wings?
+    A 50.0% of the insects in this database have wings.
+6.  Q What is the average weight of insects who fly?
+    A The average weight of insects that fly is approximately 0.019.
+    E This answer is incorrect. It just took the average weight of all the insects instead of inferring that only insects with wings can fly.
+7.  Q 
+    A ```sql
+    SELECT
+        (SELECT AVG(a.weight)
+        FROM Animal a
+        JOIN Bird b ON a.id = b.animal_id
+        WHERE b.nest_type = 'rock') AS rock_avg_weight,
+        (SELECT AVG(a.weight)
+        FROM Animal a
+        JOIN Bird b ON a.id = b.animal_id
+        WHERE b.nest_type != 'rock') AS other_avg_weight;
+    ```
+    E It appears that sometimes the API I'm using doesn't give back a plain SQl response. There is probably a configuration for that somewhere.
+8.  Q What is the heaviest bird?
+    A The heaviest bird is the Emperor Penguin, weighing 20.0 units.

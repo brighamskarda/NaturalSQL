@@ -30,7 +30,7 @@ def main():
         context = get_contex(cursor)
         logging.debug("Database Context: " + str(context))
 
-        messageHistory.append(context)
+        messageHistory.extend(context)
 
         userQuestion = {"role": "user", "content": input("Enter your question: ")}
 
@@ -54,9 +54,13 @@ def main():
             }
         )
 
-        cursor.execute(sqlQuery)
+        sqlResult = ""
 
-        sqlResult = str(cursor.fetchall())
+        try:
+            cursor.execute(sqlQuery)
+            sqlResult = str(cursor.fetchall())
+        except:
+            sqlResult = "Invalid SQL"
 
         logging.debug("Result of running SQL: " + sqlResult)
 
@@ -92,7 +96,29 @@ def get_contex(cursor: sqlite3.Cursor):
     context = ""
     for schema in schemas:
         context = context + schema[0] + "\n"
-    return {"role": "system", "content": context.replace("\r\n", "\n")}
+    messages = [{"role": "system", "content": context.replace("\r\n", "\n")}]
+
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = cursor.fetchall()
+
+    # Dictionary to store the first two rows of each table
+    table_data = {}
+
+    for table in tables:
+        table_name = table[0]
+        cursor.execute(f"SELECT * FROM {table_name} LIMIT 2;")
+        rows = cursor.fetchall()
+        table_data[table_name] = rows
+
+    messages.append(
+        {
+            "role": "system",
+            "content": "Here is example data from each of the tables in the database: "
+            + str(table_data),
+        }
+    )
+
+    return messages
 
 
 if __name__ == "__main__":
