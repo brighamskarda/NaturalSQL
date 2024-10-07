@@ -18,9 +18,23 @@ The second example is an example that didn't work with a brief explanation of wh
 
 ### Example 1
 
+Q Excluding centipedes and millipedes, what is the average number of legs each animal has in the database?
+
+A The average number of legs for animals in the database, excluding centipedes and millipedes, is 5.2.
+
 ### Example 2
 
+Q What percentage of animals in this database have wings?
+
+A Approximately 16.67% of the animals in this database have wings.
+
+#### Explanation
+
+This answer is not correct. There are multiple ways to interpret this question, but even the most conservative approach should show at least 25% of the animals as having wings. The SQL generated was gibberish. SELECT (COUNT(DISTINCT a.id) * 100.0 / (SELECT COUNT(*).
+
 ## Explanation of Prompting Strategies Used
+
+Originally I was going to just go with a zero shot prompt strategy. I just provided that database structure and started asking question. While some tasks were obvious, without being able to see a little bit of example data the model struggled to create good SQL. So I then switched to a few-shot kind of approach. I didn't provide any sql, but I provided a few rows from each table in the database so it knew what kind of data was there. This helped it know how to better format its SQL queries.
 
 ## How To Run
 
